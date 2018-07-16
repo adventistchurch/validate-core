@@ -12,11 +12,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eduludi/validate-core.git"
+    "url": "https://github.com/adventistchurch/validate-core.git"
   },
-  "homepage": "https://github.com/eduludi/validate-core",
+  "homepage": "https://github.com/adventistchurch/validate-core",
   "bugs": {
-    "url": "https://github.com/eduludi/validate-core/issues"
+    "url": "https://github.com/adventistchurch/validate-core/issues"
   },
   "keywords": [
     "webpack",
