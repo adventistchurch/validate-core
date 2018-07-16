@@ -4,7 +4,7 @@
   "description": "Data validation utilities",
   "main": "lib/validate-core.js",
   "scripts": {
-    "build": "webpack --env dev && webpack --env build && npm run test",
+    "build": "webpack --env dev && webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "jest --watch"
   },
@@ -37,7 +37,9 @@
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^8.0.3",
     "babel-jest": "^23.4.0",
-    "eslint": "^5.0.1",
+    "babel-loader": "^8.0.0-beta",
+    "eslint": "^4.19.1",
+    "eslint-loader": "^2.0.0",
     "jest": "^23.4.0",
     "jsdom": "11.11.0",
     "jsdom-global": "3.0.2",
