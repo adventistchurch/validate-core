@@ -23,7 +23,7 @@ test('with a null value, and not allowing empty', () => {
 })
 
 // Minimun
-test('with a short string given a minumum', () => {
+test('with a short string given a minimum', () => {
   const message = formatMessage(tooShort, { minimum: 5 })
   expect(length('123', { minimum: 5 })).toEqual([message])
   expect(length('a', { minimum: 5 })).toEqual([message])
@@ -59,7 +59,7 @@ test('with a short enough string', () => {
 })
 
 // Minimun & Maximum
-test('with a string within the lenght range', () => {
+test('with a string within the length range', () => {
   const withinRange = { minimum: 3, maximum: 7 }
   expect(length('123', withinRange)).toBe(undefined)
   expect(length('1234', withinRange)).toBe(undefined)
@@ -69,19 +69,19 @@ test('with a string within the lenght range', () => {
 })
 
 // Exact (is)
-test('with a string of different lenght', () => {
+test('with a string of different length', () => {
   expect(length('12345', { is: 4 })).toEqual([
     formatMessage(wrongLength, { is: 4 })
   ])
 })
 
-test('with a string of different lenght and a custom message', () => {
+test('with a string of different length and a custom message', () => {
   expect(length('12345', { is: 4, wrongLength: customWrongLength })).toEqual([
     formatMessage(customWrongLength, { is: 4 })
   ])
 })
 
-test('with a string of same lenght', () => {
+test('with a string of the same length', () => {
   expect(length('1234', { is: 4 })).toEqual(undefined)
   expect(length('abc', { is: 3 })).toEqual(undefined)
   expect(length('testing', { is: 7 })).toEqual(undefined)
