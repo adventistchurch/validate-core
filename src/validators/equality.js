@@ -1,0 +1,32 @@
+import { formatMessage, isDefined, isEmpty, isString, prettify } from '../utils'
+
+export const defaults = {
+  allowEmpty: false,
+  attribute: null,
+  comparator: (a, b) => a === b,
+  message: 'is not equal to %{attribute}',
+  formatMessage
+}
+
+export default (value, options) => {
+  if (isString(options)) {
+    options = { attribute: options }
+  }
+
+  const { allowEmpty, attribute, comparator, message, formatMessage } = {
+    ...defaults,
+    ...options
+  }
+
+  if (allowEmpty && !isDefined(value)) return
+
+  if (!allowEmpty && isEmpty(attribute)) {
+    throw new Error('The attribute must be non empty')
+  }
+
+  if (!comparator(value, attribute)) {
+    return formatMessage(message, {
+      attribute: prettify(attribute)
+    })
+  }
+}
