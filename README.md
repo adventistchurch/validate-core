@@ -162,27 +162,44 @@ Individial [validators](#validators) will return almost the same, with the excep
 
 The date validator is just a shorthand for the [datetime](#datetime) validator with the `dateOnly` option set to `true`.
 
+Examples:
+
+```js
+import validate from 'validate-core'
+
+validate(new Date('2010-10-01'), {
+  date: true
+})
+// => undefined
+
+validate(new Date('2010-10-01 12:34:56'), {
+  date: true
+})
+// => ['must be a date (not a datetime)']
+```
+
 #### `datetime`
 
 This datetime validator can be used to validate dates and times. Since date parsing in javascript is very poor some additional work is required to make this work.
 
-Before this validator can be used the parse and format functions needs to be set. The parse function should take the value to parse (non null but otherwise untouched) and return the unix timestamp (in milliseconds) for that date or NaN if it's invalid.
+Before this validator can be used the parse and format functions needs to be set. The `parse` function should take the value to parse (non null but otherwise untouched) and return the unix timestamp (in milliseconds) for that date or `NaN` if it's invalid.
 
-It's important to mention that the constraints (`earliest`, `latest`) will also be parsed using this method.
+It's important to mention that the constraints (`laterThan`, `earlierThan`) will also be parsed using this method. These arguments will be parsed using the `parse` function, just like the `value`.
 
-The format function should take a unix timestamp (in milliseconds) and format it in a user friendly way.
+The `format` function should take a unix timestamp (in milliseconds) and format it in a user friendly way.
 
 You can specify the follow constraints:
 
-- `earliest`: The date cannot be before this time. This argument will be parsed using the parse function, just like the value.
-- `latest`: The date cannot be after this time. This argument will be parsed using the parse function, just like the value.
+- `laterThan`: The date cannot be before this time.
+- `earlierThan`: The date cannot be after this time.
 - `dateOnly`: If `true`, only dates (not datetimes) will be allowed. Default: `false`
 
 You can change the messages by setting any of these settings the options for the validator:
 
 - `notValid` (default: `must be a valid date`)
-- `tooEarly`(default: `must be no earlier than %{date}`)
-- `tooLate`(default: `must be no later than %{date}`)
+- `dateOnlyMessage`: `must be a date (not a datetime)`
+- `tooEarly`(default: `must be later than %{date}`)
+- `tooLate` (default: `must be earlier than %{date}`)
 
 You can use the placeholders `%{value}` and `%{date}` in the messages.
 
@@ -191,11 +208,27 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate(new Date('2010-10-01'), { datetime: true })
+validate(new Date('2010-10-01 12:34:56'), {
+  datetime: true
+})
 // => undefined
 
-validate(new Date('2010-10-01'), { datetime: true })
+validate(new Date('2010-10-01'), {
+  datetime: {
+    dateOnly: true
+  }
+})
 // => undefined
+
+validate(new Date('2010-09-15'), {
+  datetime: {
+    laterThan: new Date('2010-10-01'),
+    tooEarly: 'choose a date after %{date}',
+    earlierThan: new Date('2010-10-31'),
+    tooLate: 'choose a date before %{date}'
+  }
+})
+// => ['choose a date after 2010-10-01']
 ```
 
 #### `email`
@@ -377,8 +410,14 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('123456', { lenght: { is: 6 } })
+validate('12345', { lenght: { is: 5 } })
 // => undefined
+
+validate('12345', { lenght: { minimum: 6 } })
+// => ['is too short (minimum is 6 characters)']
+
+validate('12345', { lenght: { maximum: 4 } })
+// => ['is too long (maximum is 4 characters)']
 ```
 
 #### `numericality`
@@ -450,6 +489,9 @@ validate('something', { presence: true })
 validate('', { presence: true })
 // => ["can't be blank"]
 
+validate(null, { presence: true })
+// => ["can't be blank"]
+
 validate('', { presence: { allowEmpty: true } })
 // => undefined
 
@@ -464,7 +506,7 @@ The URL validator ensures that the input is a valid URL. Validating URLs are pre
 The following options are supported:
 
 - `message`: The message if the validator fails. Defaults to `is not a valid url`
-- `schemes`: A list of schemes to allow. If you want to support any scheme you can use a `regexp` here (for example `[".+"]`). The default value is `["http", "https"]`.
+- `schemes`: A list of schemes to allow. If you want to support any scheme you can use a `regexp` here (for example `[".+"]`). The default value is: `["http", "https"]`.
 - `allowLocal`: A `boolean` that if `true` allows local `hostnames` such as `10.0.1.1` or `localhost`. The default is `false`.
 
 Examples:
@@ -472,30 +514,25 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate('https://google.com', { url: true })
+// => undefined
+
+validate('google.com', { url: true }) // missing scheme!
+// => ['is not a valid url']
 ```
 
 ### Utility methods
 
 > TODO: Add Utilities API here!
 
-## Build
-
-Complie the code with:
-
-```bash
-yarn build
-```
-
-or
-
-```bash
-npm run build
-```
-
-> **Note**: make sure you have project's dependencies installed by running:
-> `yarn` or `npm install`
-
-## Licence
+## Acknowledges
 
 This project was forked initialy from Nicklas Ansman's [validate.js](https://github.com/ansman/validate.js)
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2018 General Conference of Seventh-day Adventists
+
+(Read more in LICENSE file)
