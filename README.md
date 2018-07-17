@@ -2,8 +2,6 @@
 
 A set of data validation utilities.
 
-> **IMPORTANT**: at the moment, this library is meant to be used in projects within a build system, like `webpack` or `parcel`, and doesn't provide a precomplied version of itself.
-
 ## Features
 
 - Single data validation: check validity in an atomic way
@@ -578,6 +576,42 @@ validate('google.com', { url: true }) // missing scheme!
 ### Utility methods
 
 > TODO: Add Utilities API here!
+
+## Development
+
+### Dev mode
+
+```bash
+# yarn
+yarn dev
+
+# or npm
+npm run dev
+```
+
+### Build
+
+```bash
+# yarn
+yarn build
+
+# or npm
+npm run build
+```
+
+### Run Tests
+
+Tests are written with `jest`
+
+```bash
+# yarn
+yarn test
+yarn test:watch # watch mode
+
+# or npm
+npm run test
+npm run test:watch # watch mode
+```
 
 ## Acknowledges
 
