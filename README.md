@@ -442,7 +442,7 @@ If you want a custom error message you may specify it using the message option o
 - `notValid`
 - `notInteger` (default: `must be an integer`)
 - `notGreaterThan` (default: `must be greater than %{count}`)
-- `notGreaterThanOrEqualTo`: (default: `must be greater than or equal to %{count}`)
+- `notGreaterThanOrEqualTo` (default: `must be greater than or equal to %{count}`)
 - `notEqualTo` (default: `must be equal to %{count}`)
 - `notLessThan` (default: `must be less than %{count}`)
 - `notLessThanOrEqualTo` (default: `must be less than or equal to %{count}`)
