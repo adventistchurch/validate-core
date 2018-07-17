@@ -4,7 +4,8 @@
   "description": "Data validation library",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --watch"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Eduardo Ludi",
   "license": "MIT",
@@ -23,6 +24,7 @@
     "validation"
   ],
   "devDependencies": {
+    "eslint": "^5.1.0",
     "jest": "^23.4.0"
   },
   "prettier": {
