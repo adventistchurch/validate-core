@@ -509,7 +509,30 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate(123.4, {
+  numericality: true
+})
+// => undefined
+
+validate('-123.4', {
+  numericality: true
+})
+// => undefined
+
+validate(24, {
+  numericality: {
+    divisibleBy: 5
+  }
+})
+// => ['must be divisible by 5']
+
+validate(80, {
+  numericality: {
+    greaterThan: 100,
+    notGreaterThan: 'please enter a number greater than %{count}'
+  }
+})
+// => ['please enter a number greater than 100']
 ```
 
 #### `presence`
