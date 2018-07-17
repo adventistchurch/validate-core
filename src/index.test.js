@@ -1,11 +1,11 @@
-import validateData from './index'
+import validate from './index'
 import { defaults } from './validators/email'
 
 test('with null', () => {
-  expect(validateData(null)).toBe(undefined)
+  expect(validate(null)).toBe(undefined)
 })
 
 test('with email rule', () => {
-  expect(validateData('test@email.com', { email: true })).toBe(undefined)
-  expect(validateData('test@com', { email: true })).toEqual([defaults.message])
+  expect(validate('test@email.com', { email: true })).toBe(undefined)
+  expect(validate('test@com', { email: true })).toEqual([defaults.message])
 })
