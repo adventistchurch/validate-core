@@ -6,7 +6,7 @@ export const defaults = {
   dateOnly: false,
   message: null,
   notValid: 'must be a valid date (${value})',
-  dateOnlyMessage: 'must be a date only (${value})',
+  dateOnlyMessage: 'must be a date (not a datetime)',
   tooEarly: 'must be no earlier than %{date}',
   tooLate: 'must be no later than %{date}',
   formatMessage
