@@ -2,7 +2,7 @@ import {
   capitalize,
   isDefined,
   isEmpty,
-  format,
+  formatMessage,
   isInteger,
   isNumber,
   isString,
@@ -15,13 +15,20 @@ export const defaults = {
   odd: false,
   even: false,
   message: null,
-  noStrings: true,
+  noStrings: false,
   notValid: 'must be a valid number',
   notNumber: 'is not a number',
   notInteger: 'must be an integer',
   notOdd: 'must be an odd number',
   notEven: 'must be an even number',
-  mustBe: 'must be %{type} %{count}'
+  mustBe: 'must be %{type} %{count}',
+  notGreaterThan: 'must be greater than %{count}',
+  notGreaterThanOrEqualTo: 'must be greater than or equal to %{count}',
+  notEqualTo: 'must be equal to %{count}',
+  notLessThan: 'must be less than %{count}',
+  notLessThanOrEqualTo: 'must be less than or equal to %{count}',
+  notDivisibleBy: 'must be divisible by %{count}',
+  formatMessage
 }
 
 const checks = {
@@ -41,6 +48,7 @@ export default (value, options) => {
     onlyInteger,
     odd,
     even,
+    formatMessage,
     message,
     mustBe,
     noStrings,
@@ -52,7 +60,7 @@ export default (value, options) => {
   } = { ...defaults, ...options }
 
   // If empty values are fine
-  if (isDefined(value)) return
+  if (!isDefined(value)) return
 
   // Strict will check that it is a valid looking number
   if (isString(value) && strict) {
@@ -71,11 +79,13 @@ export default (value, options) => {
   // If it's not a number we shouldn't continue since it will compare it.
   if (!isNumber(value)) return message || notValid
 
+  if (!options) return
+
   // Same logic as above, sort of. Don't bother with comparisons if this
   // doesn't pass.
   if (onlyInteger && !isInteger(value)) return message || notInteger
 
-  for (const checkName in Object.keys(checks)) {
+  for (const checkName of Object.keys(checks)) {
     const count = options[checkName]
     if (isNumber(count) && !checks[checkName](value, count)) {
       // This picks the default message if specified
@@ -85,7 +95,7 @@ export default (value, options) => {
       const msg = options[key] || mustBe
 
       errors.push(
-        format(msg, {
+        formatMessage(msg, {
           count: count,
           type: prettify(checkName)
         })
