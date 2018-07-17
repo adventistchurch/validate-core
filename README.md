@@ -29,6 +29,18 @@ This library is based in the robust [`validate.js`](https://validatejs.org). Eve
 - **ES6 Modules**: called specific modules in your project, just what you need.
 - **No legacy code**: don't care about jQuery and old stuff
 
+## Install
+
+```bash
+yarn add validate-core
+```
+
+or
+
+```bash
+npm install validate-core
+```
+
 ## Basic Usage
 
 Examples:
@@ -143,6 +155,48 @@ validate('myusername', {
 - an `array` with of one or more strings that explain what failed
 
 Individial [validators](#validators) will return almost the same, with the exceptions in cases when they can return just a `string`, due only one thing can fail at the time.
+
+### Custom `formatMessage` function
+
+Some validators support providing a custom string formatter function using the `formatMessage` option.
+
+The validators that support this are: [`datetime`](#datetime), [`equality`](#equality), [`exclusion`](#exclusion), [`inclusion`](#inclusion), [`length`](#length) and [`type`](#type).
+
+The function has two parameters:
+
+- a `message`, with placeholder to replace
+- an `object` with `replacers`: keys used to replace placeholders with their values. Every
+
+> **NOTE**: `formatMessage` requires a custom `message` in the options.
+
+Example for a custom message formatter for [`length()`](#length):
+
+```js
+import validate from 'validate-core'
+
+// Using hashes for placeholders
+const myCustomMesage = 'length is not exactly #is#'
+
+// Note: length() provides the following replacers:
+// - is
+// - minimum
+// - maximum
+
+const myFormatter = (message = '', replacers = {}) => {
+  return message.replace(/#\w+#/g, placeholder => {
+    return replacers[placeholder] || placeholder
+  })
+}
+
+validate('123456', {
+  length: {
+    is: 5,
+    message: myCustomMesage,
+    formatMessage: myFormatter
+  }
+})
+//
+```
 
 ### Validators
 
@@ -410,13 +464,13 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('12345', { lenght: { is: 5 } })
+validate('12345', { length: { is: 5 } })
 // => undefined
 
-validate('12345', { lenght: { minimum: 6 } })
+validate('12345', { length: { minimum: 6 } })
 // => ['is too short (minimum is 6 characters)']
 
-validate('12345', { lenght: { maximum: 4 } })
+validate('12345', { length: { maximum: 4 } })
 // => ['is too long (maximum is 4 characters)']
 ```
 
