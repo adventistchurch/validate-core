@@ -33,10 +33,12 @@ test('with a short string given a minimum', () => {
 })
 
 test('with a long enough string', () => {
-  expect(length('12345', { minimum: 5 })).toBe(undefined)
-  expect(length('abcde', { minimum: 5 })).toBe(undefined)
-  expect(length('testing', { minimum: 5 })).toBe(undefined)
-  expect(length('email@test.com', { minimum: 5 })).toBe(undefined)
+  const minimum = 5
+
+  expect(length('12345', { minimum })).toBe(undefined)
+  expect(length('abcde', { minimum })).toBe(undefined)
+  expect(length('testing', { minimum })).toBe(undefined)
+  expect(length('email@test.com', { minimum })).toBe(undefined)
 })
 
 // /Maximum
