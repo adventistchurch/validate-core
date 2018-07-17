@@ -496,6 +496,14 @@ npm run build
 > **Note**: make sure you have project's dependencies installed by running:
 > `yarn` or `npm install`
 
-## Licence
+## Acknowledges
 
 This project was forked initialy from Nicklas Ansman's [validate.js](https://github.com/ansman/validate.js)
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2018 General Conference of Seventh-day Adventists
+
+(Read more in LICENSE file)
