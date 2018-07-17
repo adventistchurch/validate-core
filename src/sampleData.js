@@ -15,11 +15,13 @@ const booleans = [
 
 const strings = [
   'Text',
-  '12345',
+  'abc123',
   'a spaced string!',
   '!@#$%^&*()_+=-[]',
   aFunction('oops!')
 ]
+
+const numbersAsStrings = ['123', '-123', '0000123', '0.123', '12.3', '123.']
 
 const integers = [
   0,
@@ -30,6 +32,8 @@ const integers = [
   12345,
   12345 * 2,
   99999999999999999,
+  -123,
+  -0,
   aFunction(16777)
 ]
 
@@ -43,6 +47,8 @@ const floats = [
   10 / 3,
   123 / 231,
   999999999.9999999,
+  -12.5,
+  -0.01,
   aFunction(12.99)
 ]
 
@@ -79,5 +85,6 @@ export {
   nully,
   numbers,
   objects,
-  strings
+  strings,
+  numbersAsStrings
 }

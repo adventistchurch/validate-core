@@ -20,21 +20,25 @@ test('with a null value and a custom message', () => {
   expect(length(null, { notValid: customNotValid })).toBe(undefined)
 })
 
-// Minimun
+// Minimum
 test('with a short string given a minimum', () => {
-  const message = formatMessage(tooShort, { minimum: 5 })
-  expect(length('123', { minimum: 5 })).toEqual([message])
-  expect(length('a', { minimum: 5 })).toEqual([message])
-  expect(length('test', { minimum: 5 })).toEqual([message])
-  expect(length('1', { minimum: 5 })).toEqual([message])
-  expect(length('1.23', { minimum: 5 })).toEqual([message])
+  const minimum = 5
+  const message = formatMessage(tooShort, { minimum })
+
+  expect(length('123', { minimum })).toEqual([message])
+  expect(length('a', { minimum })).toEqual([message])
+  expect(length('test', { minimum })).toEqual([message])
+  expect(length('1', { minimum })).toEqual([message])
+  expect(length('1.23', { minimum })).toEqual([message])
 })
 
 test('with a long enough string', () => {
-  expect(length('12345', { minimum: 5 })).toBe(undefined)
-  expect(length('abcde', { minimum: 5 })).toBe(undefined)
-  expect(length('testing', { minimum: 5 })).toBe(undefined)
-  expect(length('email@test.com', { minimum: 5 })).toBe(undefined)
+  const minimum = 5
+
+  expect(length('12345', { minimum })).toBe(undefined)
+  expect(length('abcde', { minimum })).toBe(undefined)
+  expect(length('testing', { minimum })).toBe(undefined)
+  expect(length('email@test.com', { minimum })).toBe(undefined)
 })
 
 // /Maximum
@@ -49,6 +53,7 @@ test('with a long string given a maximum', () => {
 
 test('with a short enough string', () => {
   const maximum = 5
+
   expect(length('1', { maximum })).toBe(undefined)
   expect(length('12', { maximum })).toBe(undefined)
   expect(length('123', { maximum })).toBe(undefined)
@@ -56,9 +61,10 @@ test('with a short enough string', () => {
   expect(length('12345', { maximum })).toBe(undefined)
 })
 
-// Minimun & Maximum
+// Minimum & Maximum
 test('with a string within the length range', () => {
   const withinRange = { minimum: 3, maximum: 7 }
+
   expect(length('123', withinRange)).toBe(undefined)
   expect(length('1234', withinRange)).toBe(undefined)
   expect(length('12345', withinRange)).toBe(undefined)
