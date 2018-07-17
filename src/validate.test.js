@@ -1,4 +1,4 @@
-import validate from './index'
+import validate from './validate'
 import { defaults } from './validators/email'
 
 test('with null', () => {

@@ -1,9 +1,9 @@
-import validators from './validators'
+import validators from './validators/index'
 import { isArray, isDefined, isFunction } from './utils'
 
 // Runs the validators specified by the constraints object:
 // - If validation fails, it will return an array with the errors.
-// - Otherwise it will return undefined.
+// - Otherwise it will return undefined
 export default (value, constraints) => {
   const results = []
 
