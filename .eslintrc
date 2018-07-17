@@ -20,6 +20,7 @@
     "sinon": true
   },
 
+  "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module"
   },
