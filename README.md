@@ -1,45 +1,148 @@
 # validate-core
 
-A light set of data validation utilities.
+A set of data validation utilities.
 
-## Yet another validation library? Why?
-
--
+> **IMPORTANT**: at the moment, this library is meant to be used in projects within a build system, like `webpack` or `parcel`, and doesn't provide a precomplied version of itself.
 
 ## Features
 
-Validates:
+- Single data validation: check validity in an atomic way
+- Validate against a set of constraints
+- Available [validators](#validators):
 
-- date/datetime
-- email
-- equality
-- exclusion / inclusion
-- numericality
-- presence
-- type
-- url
+  - [`date`](#date)
+  - [`datetime`](#datetime)
+  - [`email`](#email)
+  - [`equality`](#equality)
+  - [`exclusion`](#exclusion)
+  - [`inclusion`](#inclusion)
+  - [`length`](#length)
+  - [`numericality`](#numericality)
+  - [`presence`](#presence)
+  - [`type`](#type)
+  - [`url`](#url)
+
+## Yet another validation library? Why?
+
+This library is based in the robust [`validate.js`](https://validatejs.org). Even when `validate.js` will work just fine in most scenarios, sometimes you just need its core or part of it:
+
+- **ES6 Modules**: called specific modules in your project, just what you need.
+- **No legacy code**: don't care about jQuery and old stuff
 
 ## Basic Usage
-
-Syntax:
-
-```js
-validate(data, constraints)
-```
 
 Examples:
 
 ```js
 import validate from 'validate-core'
 
-validate('email@test.com', { email: true })
+validate('email@test.com', { email: true, presence: true })
 // => undefined
 
-validate('email@test', { email: true })
+validate('email@test', { email: true, presence: true })
 // => ['is not a valid email']
+
+validate('', { email: true, presence: true })
+// => ['can't be blank']
+```
+
+### Using a specific validator
+
+It's possible to `import` to call a specific validator module.
+
+Synatax:
+
+```js
+import <validatorName> from 'validate-core/validators/<validatorName>'
+```
+
+Examples:
+
+```js
+import presence from 'validate-core/validators/presence'
+
+presence('something') // => undefined
+presence('') // => ["can't be blank"]
+```
+
+```js
+import date from 'validate-core/validators/email'
+
+email('email@test.com') // => undefined
+email('email@test') // => ['is not a valid email']
 ```
 
 ## API
+
+### General concepts
+
+### The `validate()` function
+
+The library `default` `export` is a function that accepts a `value` as first parameter that is the one you want to validate, and an object with a set of [constraints](#constraints) as the second one:
+
+Syntax:
+
+```js
+import validate from 'validate-core'
+
+validate(value, { ...constraints })
+```
+
+Example:
+
+```js
+import validate from 'validate-core'
+
+validate('email@test.com', {
+  email: true,
+  presence: true
+})
+// => undefined
+```
+
+#### Constraints and options
+
+The [`validate()` function](#the-validate-function) accepts as second parameter an `object` with the _constraints_ (or _rules_) the value should match. This `object` should have the following syntax:
+
+```js
+{
+  validatorX:  { ...optionsForValidatorX },
+  validatorY:  { ...optionsForValidatorY },
+  /// ...
+}
+```
+
+Some validators have _"shortcuts"_ for that override the constraints `object` with a single value.
+
+Example with the [`format`](#format) validator:
+
+```js
+// With a constraint object
+validate('myusername', {
+  format: {
+    pattern: /^@?(\w){1,15}$/,
+    message: 'is not a valid Twitter account'
+  }
+})
+// => ['is not a valid Twitter account']
+
+// With a shortcut
+validate('myusername', {
+  format: /^@?(\w){1,15}$/
+})
+// => ['format is invalid']
+```
+
+> Note that in the shortcut version you cannot customize the error message.
+
+#### Return values
+
+[`validate()`](#the-validate-function) will return:
+
+- `undefined` when there is no error
+- an `array` with of one or more strings that explain what failed
+
+Individial [validators](#validators) will return almost the same, with the exceptions in cases when they can return just a `string`, due only one thing can fail at the time.
 
 ### Validators
 
@@ -57,7 +160,7 @@ validate('email@test', { email: true })
 
 #### `date`
 
-The date validator is just a shorthand for the datetime validator with the dateOnly option set to true.
+The date validator is just a shorthand for the [datetime](#datetime) validator with the `dateOnly` option set to `true`.
 
 #### `datetime`
 
@@ -71,15 +174,15 @@ The format function should take a unix timestamp (in milliseconds) and format it
 
 You can specify the follow constraints:
 
-- `earliest`: The date cannot be before this time. This argument will be parsed using the parse function, just like the value. The default error must be no earlier than `%{date}`
-- `latest`: The date cannot be after this time. This argument will be parsed using the parse function, just like the value. The default error must be no later than `%{date}`
-- `dateOnly`: If true, only dates (not datetimes) will be allowed. The default error is must be a valid date
+- `earliest`: The date cannot be before this time. This argument will be parsed using the parse function, just like the value.
+- `latest`: The date cannot be after this time. This argument will be parsed using the parse function, just like the value.
+- `dateOnly`: If `true`, only dates (not datetimes) will be allowed. Default: `false`
 
 You can change the messages by setting any of these settings the options for the validator:
 
-- `notValid`
-- `tooEarly`
-- `tooLate`
+- `notValid` (default: `must be a valid date`)
+- `tooEarly`(default: `must be no earlier than %{date}`)
+- `tooLate`(default: `must be no later than %{date}`)
 
 You can use the placeholders `%{value}` and `%{date}` in the messages.
 
@@ -88,7 +191,11 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate(new Date('2010-10-01'), { datetime: true })
+// => undefined
+
+validate(new Date('2010-10-01'), { datetime: true })
+// => undefined
 ```
 
 #### `email`
@@ -111,11 +218,14 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('email@test.com', { email: true })
+validate('nice@email.com', { email: true })
 // => undefined
 
-validate('email@test', { email: true })
+validate('bad@email', { email: true })
 // => ['is not a valid email']
+
+validate('bad@email', { email: { message: 'wrong e-mail format' } })
+// => ['wrong e-mail format']
 ```
 
 #### `equality`
@@ -135,14 +245,21 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate(123, { equals: { attribute: 123 } })
+// => undefined
+
+validate('foo', { equals: { attribute: 'foo' } })
+// => undefined
+
+validate('bar', { equals: { attribute: 'bar' } })
+// => ['is not equal to bar']
 ```
 
 #### `exclusion`
 
 The exclusion validator is useful for restriction certain values.
 
-It checks that the given value is not in the list given by the within option.
+It checks that the given value **is not in the list** given by the `within` option.
 
 You can specify `within` as a list or as an object (in which case the keys of the object are used).
 
@@ -153,7 +270,11 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate('baz', { exclusion: { within: ['foo', 'bar'] } })
+// => undefined
+
+validate('foo', { exclusion: { within: ['foo', 'bar'] } })
+// => ['foo is restricted']
 ```
 
 #### `format`
@@ -169,7 +290,17 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate('(123) 456-7890', {
+  format: /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/ // US Phone format
+})
+// => undefined
+
+validate('(123) 456-7890', {
+  format: {
+    pattern: '^D?(d{3})D?D?(d{3})D?(d{4})$' // US Phone format
+  }
+})
+// => undefined
 ```
 
 #### `inclusion`
@@ -187,7 +318,27 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate('foo', {
+  inclusion: {
+    within: ['foo', 'bar']
+  }
+})
+// => undefined
+
+validate('baz', {
+  inclusion: {
+    within: ['foo', 'bar']
+  }
+})
+// => ['foo is not included in the list']
+
+
+validate('baz', {
+  inclusion: {
+    within: ['foo', 'bar'],
+    message: {'%{value} is not allowed'} }
+})
+// => ['foo is not allowed']
 ```
 
 #### `length`
@@ -198,11 +349,11 @@ Any object with the length property can be validated but all the default error m
 
 You may specify the following length constraints:
 
-- `is`: The value has to have exactly this length. The default error is `is the wrong length (should be %{count} characters)`
-- `minimum`: The value cannot be shorter than this value. The default error is `is too short (minimum is %{count} characters)`
-- `maximum`: The value cannot be longer than this value. The default error is `is too long (maximum is %{count} characters)`
+- `is`: The value has to have exactly this length.
+- `minimum`: The value cannot be shorter than this value.
+- `maximum`: The value cannot be longer than this value.
 
-You can specify the error message using the `wrongLength`, `tooShort` and `tooLong` options:
+You can specify the error message using the `notValid`, `wrongLength`, `tooShort` and `tooLong` options:
 
 - `notValid` (default: `has an incorrect length`)
 - `tooLong` (default: `is too long (maximum is %{count} characters)`)
@@ -226,7 +377,8 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate('123456', { lenght: { is: 6 } })
+// => undefined
 ```
 
 #### `numericality`
@@ -271,19 +423,19 @@ validate('', {})
 
 The presence validator validates that the value is defined. This validator will probably the most used one, it corresponds to HTML5's required attribute.
 
-You can use the message option to customize the message. The default message is can't be blank and can be changed by setting validate.validators.presence.message.
+You can use the `message` option to customize the message. The default message is `can't be blank`.
 
 These are the values that are considered empty:
 
 - `null`
 - `undefined`
 
-Additionally you can set the allowEmpty to false to disallow the following values:
+Additionally you can set the `allowEmpty` to `true` to allow the following values:
 
-- `{}` (empty objects)
-- `[]` (empty arrays)
-- `""` (empty string)
-- `" "` (whitespace only string)
+- `{}` (empty `objects`)
+- `[]` (empty `arrays`)
+- `""` (empty `string`)
+- `" "` (whitespace only `string`)
 
 > Important! All other values are considered valid (including functions)!
 
@@ -292,18 +444,29 @@ Examples:
 ```js
 import validate from 'validate-core'
 
-validate('', {})
+validate('something', { presence: true })
+// => undefined
+
+validate('', { presence: true })
+// => ["can't be blank"]
+
+validate('', { presence: { allowEmpty: true } })
+// => undefined
+
+validate('', { presence: { message: 'is required' } })
+// => ['is required']
 ```
 
 #### `url`
 
-The URL validator ensures that the input is a valid URL. Validating URLs are pretty tricky but this validator follows a gist that can be found here.
+The URL validator ensures that the input is a valid URL. Validating URLs are pretty tricky but this validator follows a gist that can be found [here](https://gist.github.com/dperini/729294).
 
 The following options are supported:
 
-message - The message if the validator fails. Defaults to is not a valid url
-schemes - A list of schemes to allow. If you want to support any scheme you can use a regexp here (for example [".+"]). The default value is ["http", "https"].
-allowLocal - A boolean that if true allows local hostnames such as 10.0.1.1 or localhost. The default is false.
+- `message`: The message if the validator fails. Defaults to `is not a valid url`
+- `schemes`: A list of schemes to allow. If you want to support any scheme you can use a `regexp` here (for example `[".+"]`). The default value is `["http", "https"]`.
+- `allowLocal`: A `boolean` that if `true` allows local `hostnames` such as `10.0.1.1` or `localhost`. The default is `false`.
+
 Examples:
 
 ```js
@@ -311,6 +474,8 @@ import validate from 'validate-core'
 
 validate('', {})
 ```
+
+### Utility methods
 
 > TODO: Add Utilities API here!
 
