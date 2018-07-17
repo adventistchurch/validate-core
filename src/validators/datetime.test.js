@@ -11,15 +11,11 @@ const lateDate = new Date('2018-10-27')
 
 // With null value
 test('with a null value', () => {
-  expect(datetime(null)).toBe(notValid)
+  expect(datetime(null)).toBe(undefined)
 })
 
 test('with a null value and a custom message', () => {
-  expect(datetime(null, { message: customMessage })).toBe(customMessage)
-})
-
-test('with a null value, but allowing empty', () => {
-  expect(datetime(null, { allowEmpty: true })).toBe(undefined)
+  expect(datetime(null, { message: customMessage })).toBe(undefined)
 })
 
 // With a valid date (date only)

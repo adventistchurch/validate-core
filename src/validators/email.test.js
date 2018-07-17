@@ -5,15 +5,8 @@ const { message } = defaults
 const customMessage = "doesn't looks like an email!"
 
 test('with a null value', () => {
-  expect(email(null)).toBe(message)
-})
-
-test('with a null value and a custom message', () => {
-  expect(email(null, { message: customMessage })).toBe(customMessage)
-})
-
-test('with a null value and allowing empty', () => {
-  expect(email(null, { allowEmpty: true })).toBe(undefined)
+  expect(email(null)).toBe(undefined)
+  expect(email(null, { message: customMessage })).toBe(undefined)
 })
 
 test('with a valid email', () => {

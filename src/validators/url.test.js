@@ -30,8 +30,7 @@ const invalidUrls = [
 
 // with null value
 test('with null value', () => {
-  expect(url(null)).toBe(message)
-  expect(url(null, { allowEmpty: true })).toBe(undefined)
+  expect(url(null)).toBe(undefined)
 })
 
 // with values

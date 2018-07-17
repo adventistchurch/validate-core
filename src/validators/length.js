@@ -1,7 +1,6 @@
 import { formatMessage, isDefined, isNumber } from '../utils'
 
 export const defaults = {
-  allowEmpty: false,
   is: null,
   maximum: null,
   minimum: null,
@@ -15,7 +14,6 @@ export const defaults = {
 
 export default (value, options) => {
   const {
-    allowEmpty,
     is,
     maximum,
     message,
@@ -30,8 +28,8 @@ export default (value, options) => {
 
   const isNotDefined = !isDefined(value)
 
-  // When empty values are allowed
-  if (allowEmpty && isNotDefined) return
+  // Empty values are allowed
+  if (isNotDefined) return
 
   const errors = []
 

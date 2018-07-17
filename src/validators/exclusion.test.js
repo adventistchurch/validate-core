@@ -14,16 +14,8 @@ test('with a null value', () => {
   expect(exclusion(null)).toBe(undefined)
 
   expect(exclusion(null, { message: customMessage })).toBe(undefined)
-})
-
-test('with a null value and excluded items', () => {
+  expect(exclusion(null, { within: [null] })).toBe(undefined)
   expect(exclusion(null, { within: excludedItems })).toBe(undefined)
-})
-
-test('with a null value and excluded items', () => {
-  expect(exclusion(null, { within: [null] })).toBe(
-    formatMessage(message, { value: null })
-  )
 })
 
 test('with a null value and excluded items', () => {

@@ -13,7 +13,6 @@ import {
 } from '../utils'
 
 export const defaults = {
-  allowEmpty: false,
   message: 'must be of type %{type}',
   formatMessage,
   type: null
@@ -24,11 +23,11 @@ export default (value, options) => {
     options = { type: options }
   }
 
-  const { allowEmpty, message, type } = { ...defaults, ...options }
+  const { message, type } = { ...defaults, ...options }
 
   if (!isDefined(type)) throw new Error('No type was specified')
 
-  if (allowEmpty && !isDefined(value)) return
+  if (!isDefined(value)) return
 
   const types = {
     array: isArray,

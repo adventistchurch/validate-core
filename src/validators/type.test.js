@@ -94,14 +94,8 @@ const invalidValues = {
 test('with null values or missing options', () => {
   expect(() => type(null)).toThrow()
   expect(() => type(null, { message: customMessage })).toThrow()
-  expect(() => type(null, { allowEmpty: true })).toThrow()
-  expect(type(null, { type: 'string', allowEmpty: true })).toBe(undefined)
-  expect(type(null, { type: 'string' })).toBe(
-    formatMessage(message, { type: 'string' })
-  )
-  expect(type(null, { type: 'string', message: customMessage })).toBe(
-    formatMessage(customMessage, { type: 'string' })
-  )
+  expect(type(null, { type: 'string' })).toBe(undefined)
+  expect(type(null, { type: 'string', message: customMessage })).toBe(undefined)
 })
 
 test('with values', () => {

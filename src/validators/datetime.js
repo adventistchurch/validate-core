@@ -5,7 +5,6 @@ export const defaults = {
   laterThan: null,
   dateOnly: false,
   message: null,
-  allowEmpty: false,
   notValid: 'must be a valid date (${value})',
   dateOnlyMessage: 'must be a date only (${value})',
   tooEarly: 'must be no earlier than %{date}',
@@ -15,7 +14,6 @@ export const defaults = {
 
 export default (value, options) => {
   const {
-    allowEmpty,
     earlierThan,
     laterThan,
     dateOnly,
@@ -33,7 +31,7 @@ export default (value, options) => {
   const istNotDefined = !isDefined(value)
 
   // Empty values are fine
-  if (allowEmpty && istNotDefined) return
+  if (istNotDefined) return
 
   const errors = []
 

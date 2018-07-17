@@ -10,7 +10,6 @@ import {
 } from '../utils'
 
 export const defaults = {
-  allowEmpty: false,
   strict: false,
   onlyInteger: false,
   odd: false,
@@ -38,7 +37,6 @@ export default (value, options) => {
   const errors = []
 
   const {
-    allowEmpty,
     strict,
     onlyInteger,
     odd,
@@ -54,7 +52,7 @@ export default (value, options) => {
   } = { ...defaults, ...options }
 
   // If empty values are fine
-  if (allowEmpty && !isDefined(value)) return
+  if (isDefined(value)) return
 
   // Strict will check that it is a valid looking number
   if (isString(value) && strict) {

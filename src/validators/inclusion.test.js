@@ -11,15 +11,8 @@ const excludedItems = ['c', 'd', 4, 3.145, 'testing@bad.com', false].filter(
 
 // Null
 test('with a null value', () => {
-  expect(inclusion(null)).toBe(formatMessage(message, { value: null }))
-
-  expect(inclusion(null, { message: customMessage })).toBe(
-    formatMessage(customMessage, { value: null })
-  )
-})
-
-test('with a null value, but allowing empty', () => {
-  expect(inclusion(null, { allowEmpty: true })).toBe(undefined)
+  expect(inclusion(null)).toBe(undefined)
+  expect(inclusion(null, { message: customMessage })).toBe(undefined)
 })
 
 test('with a valid values', () => {

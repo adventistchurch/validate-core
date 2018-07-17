@@ -1,25 +1,23 @@
 import length, { defaults } from './length'
 
-const { formatMessage, notValid, tooLong, tooShort, wrongLength } = defaults
+const {
+  formatMessage,
+  // notValid,
+  tooLong,
+  tooShort,
+  wrongLength
+} = defaults
 
 const customNotValid = 'invalid length!'
 const customWrongLength = 'Must be exactly %{is} characters!'
 
 // NULL values
 test('with a null value', () => {
-  expect(length(null)).toBe(notValid)
+  expect(length(null)).toBe(undefined)
 })
 
 test('with a null value and a custom message', () => {
-  expect(length(null, { notValid: customNotValid })).toBe(customNotValid)
-})
-
-test('with a null value, and allowing empty', () => {
-  expect(length(null, { allowEmpty: true })).toBe(undefined)
-})
-
-test('with a null value, and not allowing empty', () => {
-  expect(length(null, { allowEmpty: false })).toBe(notValid)
+  expect(length(null, { notValid: customNotValid })).toBe(undefined)
 })
 
 // Minimun

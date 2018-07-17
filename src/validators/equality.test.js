@@ -26,11 +26,6 @@ test('with an empty value and/or no options', () => {
   expect(() => equality(null)).toThrow()
 })
 
-test('with a null value but allowing empty', () => {
-  const result = equality(null, { allowEmpty: true })
-  expect(result).toBe(undefined)
-})
-
 // With valid values
 test('with an equal value', () => {
   for (const value of testValues) {
