@@ -13,7 +13,8 @@ export default (value, constraints) => {
   for (const rule of Object.keys(constraints)) {
     const validator = validators[rule]
 
-    if (!isFunction(validator)) throw new Error('Invalid validator!')
+    if (!isFunction(validator))
+      throw new Error(`Unknow validator "${validator}"`)
 
     const constraint = constraints[rule]
     const result = validator(value, constraint)
