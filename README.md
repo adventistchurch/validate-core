@@ -13,6 +13,7 @@ A set of data validation utilities.
   - [`email`](#email)
   - [`equality`](#equality)
   - [`exclusion`](#exclusion)
+  - [`format`](#format)
   - [`inclusion`](#inclusion)
   - [`length`](#length)
   - [`numericality`](#numericality)
@@ -181,7 +182,8 @@ const myCustomMesage = 'length is not exactly #is#'
 // - maximum
 
 const myFormatter = (message = '', replacers = {}) => {
-  return message.replace(/#\w+#/g, placeholder => {
+  return message.replace(/#(\w+)#/g, (match, placeholder) => {
+    // console.log({ match, placeholder })
     return replacers[placeholder] || placeholder
   })
 }
