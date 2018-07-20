@@ -10,14 +10,13 @@ export default (value, constraints) => {
   if (!isDefined(constraints)) return
 
   // Loops through each constraints, finds the correct validator and run it.
-  for (const rule of Object.keys(constraints)) {
-    const validator = validators[rule]
+  for (const constraint in constraints) {
+    const validator = validators[constraint]
 
     if (!isFunction(validator))
       throw new Error(`Unknow validator "${validator}"`)
 
-    const constraint = constraints[rule]
-    const result = validator(value, constraint)
+    const result = validator(value, constraints[constraint])
 
     if (result) {
       results.push(isArray(result) ? [...result] : result)
