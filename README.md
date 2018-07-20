@@ -66,7 +66,7 @@ validate('', { email: true, presence: true })
 
 It's possible to `import` calling a specific validator module.
 
-Synatax:
+Syntax:
 
 ```js
 import <validatorName> from 'validate-core/validators/<validatorName>'
