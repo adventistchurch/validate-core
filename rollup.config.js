@@ -1,11 +1,8 @@
-// import { rollup } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import babel from 'rollup-plugin-babel'
 import filesize from 'rollup-plugin-filesize'
 
-const pkg = require('./package.json')
-
-let libraryName = pkg.name
+import { name as libraryName } from './package.json'
 
 const babelConf = {
   babelrc: false,
@@ -13,21 +10,22 @@ const babelConf = {
   exclude: 'node_modules/**'
 }
 
-export default [
+const outputs = [
   {
-    input: 'src/validate.js',
-    output: {
-      file: 'lib/' + libraryName + '.js',
-      format: 'cjs'
-    },
-    plugins: [babel(babelConf), filesize()]
+    fileExt: '.js'
   },
   {
-    input: 'src/validate.js',
-    output: {
-      file: 'lib/' + libraryName + '.min.js',
-      format: 'cjs'
-    },
-    plugins: [babel(babelConf), terser(), filesize()]
+    fileExt: '.min.js',
+    plugins: [terser()]
   }
 ]
+
+export default outputs.map(({ fileExt, plugins = [] }) => ({
+  input: 'src/validate.js',
+  output: {
+    file: 'lib/' + libraryName + fileExt,
+    format: 'cjs',
+    sourcemap: true
+  },
+  plugins: [babel(babelConf), ...plugins, filesize()]
+}))
