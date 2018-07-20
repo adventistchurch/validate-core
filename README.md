@@ -6,6 +6,11 @@ A set of data validation utilities.
 
 - Single data validation: check validity in an atomic way.
 - Validate against a set of constraints.
+- Lightweight
+
+  - Bundled: `~9.7 KB`
+  - min/gzip: **`~3.5 KB`**
+
 - Available [validators](#validators):
 
   - [`date`](#date)
