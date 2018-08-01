@@ -18,11 +18,9 @@ export default (value, options) => {
     ...options
   }
 
-  if (allowEmpty && !isDefined(value)) return
+  if (isEmpty(attribute)) return
 
-  if (!allowEmpty && isEmpty(attribute)) {
-    throw new Error('The attribute must be non empty')
-  }
+  if (allowEmpty && !isDefined(value)) return
 
   if (!comparator(value, attribute)) {
     return formatMessage(message, {
