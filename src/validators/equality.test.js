@@ -22,8 +22,17 @@ test('with an empty value and/or no options', () => {
   expect(equality(null, { attribute })).toBe(errorMessage)
   expect(equality('', { attribute })).toBe(errorMessage)
 
-  // when no attibute, it whould throws an error
-  expect(() => equality(null)).toThrow()
+  // when no attribute, it should be undefined
+  expect(equality(null)).toBe(undefined)
+  expect(equality('', { attribute: null })).toBe(undefined)
+
+  // allowing empty values
+  expect(equality('', { attribute: 'blabla', allowEmpty: true })).toBe(
+    undefined
+  )
+  expect(equality(null, { attribute: 'blabla', allowEmpty: true })).toBe(
+    undefined
+  )
 })
 
 // With valid values
@@ -31,11 +40,6 @@ test('with an equal value', () => {
   for (const value of testValues) {
     expect(equality(value, { attribute: value })).toBe(undefined)
   }
-})
-
-test('comparing two empty strings', () => {
-  expect(equality('', { attribute: '', allowEmpty: true })).toBe(undefined)
-  expect(() => equality('', { attribute: '' })).toThrow()
 })
 
 test('with a unequal value', () => {

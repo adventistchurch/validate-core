@@ -1,4 +1,4 @@
-import { formatMessage, isDefined, isEmpty, isString, prettify } from '../utils'
+import { formatMessage, isEmpty, isString, prettify } from '../utils'
 
 export const defaults = {
   allowEmpty: false,
@@ -20,7 +20,7 @@ export default (value, options) => {
 
   if (isEmpty(attribute)) return
 
-  if (allowEmpty && !isDefined(value)) return
+  if (allowEmpty && isEmpty(value)) return
 
   if (!comparator(value, attribute)) {
     return formatMessage(message, {
