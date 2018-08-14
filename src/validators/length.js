@@ -26,14 +26,12 @@ export default (value, options) => {
     formatMessage
   } = { ...defaults, ...options }
 
-  const isNotDefined = !isDefined(value)
-
   // Empty values are allowed
-  if (isNotDefined) return
+  if (!isDefined(value)) return
 
   const errors = []
 
-  const length = isNotDefined ? null : tokenizer(value).length
+  const length = tokenizer(value).length
 
   if (!isNumber(length)) return notValid
 
