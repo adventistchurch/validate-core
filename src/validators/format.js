@@ -26,9 +26,7 @@ export default (value, options) => {
 
   const pttrn = isString(pattern) ? new RegExp(pattern, flags) : pattern
 
-  const match = pttrn.exec(value)
-
-  if (!match || match[0].length !== value.length) {
+  if (!pttrn.test(value)) {
     return message
   }
 }
