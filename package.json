@@ -1,6 +1,6 @@
 {
   "name": "validate-core",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Data validation library",
   "main": "lib/validate-core.min.js",
   "scripts": {
