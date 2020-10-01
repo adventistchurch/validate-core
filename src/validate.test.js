@@ -1,4 +1,4 @@
-import validate from './validate'
+import { validate } from './validate'
 import { defaults as email } from './validators/email'
 import { defaults as length } from './validators/length'
 
@@ -23,10 +23,10 @@ test('with two rules', () => {
     validate('test@com', {
       presence: true,
       email: true,
-      length: { minimum: 10 }
+      length: { minimum: 10 },
     })
   ).toEqual([
     email.message,
-    [length.formatMessage(length.tooShort, { minimum: 10 })]
+    [length.formatMessage(length.tooShort, { minimum: 10 })],
   ])
 })

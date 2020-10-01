@@ -4,7 +4,7 @@ import { isArray, isDefined, isFunction } from './utils'
 // Runs the validators specified by the constraints object:
 // - If validation fails, it will return an array with the errors.
 // - Otherwise it will return undefined
-export default (value, constraints) => {
+export function validate(value, constraints) {
   const results = []
 
   if (!isDefined(constraints)) return

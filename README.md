@@ -50,7 +50,7 @@ npm install validate-core
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('email@test.com', { email: true, presence: true })
 // => undefined
@@ -99,7 +99,7 @@ The library `default export` is a function that accepts a `value` as first param
 Syntax:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate(value, { ...constraints })
 ```
@@ -107,11 +107,11 @@ validate(value, { ...constraints })
 Example:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('email@test.com', {
   email: true,
-  presence: true
+  presence: true,
 })
 // => undefined
 ```
@@ -137,14 +137,14 @@ Example with the [`format`](#format) validator:
 validate('myusername', {
   format: {
     pattern: /^@?(\w){1,15}$/,
-    message: 'is not a valid Twitter account'
-  }
+    message: 'is not a valid Twitter account',
+  },
 })
 // => ["is not a valid Twitter account"]
 
 // With a shortcut
 validate('myusername', {
-  format: /^@?(\w){1,15}$/
+  format: /^@?(\w){1,15}$/,
 })
 // => ["format is invalid"]
 ```
@@ -176,7 +176,7 @@ The function has two parameters:
 Example for a custom message formatter for [`length()`](#length):
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 // Using hashes for placeholders
 const myCustomMesage = 'length is not exactly #is#'
@@ -197,8 +197,8 @@ validate('123456', {
   length: {
     is: 5,
     message: myCustomMesage,
-    formatMessage: myFormatter
-  }
+    formatMessage: myFormatter,
+  },
 })
 // => ["length is not exactly 5"]
 ```
@@ -224,15 +224,15 @@ The date validator is just a shorthand for the [datetime](#datetime) validator w
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate(new Date('2010-10-01'), {
-  date: true
+  date: true,
 })
 // => undefined
 
 validate(new Date('2010-10-01 12:34:56'), {
-  date: true
+  date: true,
 })
 // => ["must be a date (not a datetime)"]
 ```
@@ -265,17 +265,17 @@ You can use the placeholders `%{value}` and `%{date}` in the messages.
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate(new Date('2010-10-01 12:34:56'), {
-  datetime: true
+  datetime: true,
 })
 // => undefined
 
 validate(new Date('2010-10-01'), {
   datetime: {
-    dateOnly: true
-  }
+    dateOnly: true,
+  },
 })
 // => undefined
 
@@ -284,8 +284,8 @@ validate(new Date('2010-09-15'), {
     laterThan: new Date('2010-10-01'),
     tooEarly: 'choose a date after %{date}',
     earlierThan: new Date('2010-10-31'),
-    tooLate: 'choose a date before %{date}'
-  }
+    tooLate: 'choose a date before %{date}',
+  },
 })
 // => ["choose a date after 2010-10-01"]
 ```
@@ -308,7 +308,7 @@ The default message is `is not a valid email` and as usual you can override it u
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('nice@email.com', { email: true })
 // => undefined
@@ -335,7 +335,7 @@ The default message is `is not equal to %{attribute}`
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate(123, { equals: 123 })
 // => undefined
@@ -358,17 +358,17 @@ Please note that the whole string must match the regexp, not just a part of the 
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('(123) 456-7890', {
-  format: /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/ // US Phone format
+  format: /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/, // US Phone format
 })
 // => undefined
 
 validate('(123) 456-7890', {
   format: {
-    pattern: '^D?(d{3})D?D?(d{3})D?(d{4})$' // US Phone format
-  }
+    pattern: '^D?(d{3})D?D?(d{3})D?(d{4})$', // US Phone format
+  },
 })
 // => undefined
 ```
@@ -386,7 +386,7 @@ The default message is `%{value} is restricted` and can be changed by setting th
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('baz', { exclusion: { within: ['foo', 'bar'] } })
 // => undefined
@@ -408,7 +408,7 @@ The default message is `%{value} is not included in the list` and can be changed
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('foo', {
   inclusion: {
@@ -466,7 +466,7 @@ An error is also logged to the console, since this is considered a coding error.
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('12345', { length: { is: 5 } })
 // => undefined
@@ -511,30 +511,30 @@ If you want a custom error message, you may specify it using the `message` optio
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate(123.4, {
-  numericality: true
+  numericality: true,
 })
 // => undefined
 
 validate('-123.4', {
-  numericality: true
+  numericality: true,
 })
 // => undefined
 
 validate(24, {
   numericality: {
-    divisibleBy: 5
-  }
+    divisibleBy: 5,
+  },
 })
 // => ["must be divisible by 5"]
 
 validate(80, {
   numericality: {
     greaterThan: 100,
-    notGreaterThan: 'please enter a number greater than %{count}'
-  }
+    notGreaterThan: 'please enter a number greater than %{count}',
+  },
 })
 // => ["please enter a number greater than 100"]
 ```
@@ -562,7 +562,7 @@ Additionally you can set the `allowEmpty` to `true` to allow the following value
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('something', { presence: true })
 // => undefined
@@ -593,7 +593,7 @@ The following options are supported:
 Examples:
 
 ```js
-import validate from 'validate-core'
+import { validate } from 'validate-core'
 
 validate('https://google.com', { url: true })
 // => undefined
