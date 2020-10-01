@@ -1,5 +1,5 @@
 import { terser } from 'rollup-plugin-terser'
-import babel from 'rollup-plugin-babel'
+import babel from '@rollup/plugin-babel'
 import filesize from 'rollup-plugin-filesize'
 
 import { name as libraryName } from './package.json'
@@ -7,17 +7,18 @@ import { name as libraryName } from './package.json'
 const babelConf = {
   babelrc: false,
   presets: [['@babel/preset-env', { modules: false }]],
-  exclude: 'node_modules/**'
+  exclude: 'node_modules/**',
+  babelHelpers: 'bundled',
 }
 
 const outputs = [
   {
-    fileExt: '.js'
+    fileExt: '.js',
   },
   {
     fileExt: '.min.js',
-    plugins: [terser()]
-  }
+    plugins: [terser()],
+  },
 ]
 
 export default outputs.map(({ fileExt, plugins = [] }) => ({
@@ -25,7 +26,7 @@ export default outputs.map(({ fileExt, plugins = [] }) => ({
   output: {
     file: 'lib/' + libraryName + fileExt,
     format: 'cjs',
-    sourcemap: true
+    sourcemap: true,
   },
-  plugins: [babel(babelConf), ...plugins, filesize()]
+  plugins: [babel(babelConf), ...plugins, filesize()],
 }))
